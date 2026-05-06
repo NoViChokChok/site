@@ -1,30 +1,24 @@
 /* =========================
-   RESET / BASE FIX
+   BASE RESET (ВАЖНО)
 ========================= */
 
-html {
-  height: 100%;
-  background: #000;
-}
-
-body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
 
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
-
-  background: transparent;
-
-  min-height: 100vh;
-  min-height: 100dvh;
-
+html, body {
+  width: 100%;
+  min-height: 100%;
   overflow-x: hidden;
 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Poppins', sans-serif;
 
-  overscroll-behavior: none;
+  /* ФИКС ЧЁРНОГО/БЕЛОГО ТЕКСТА В РАЗНЫХ БРАУЗЕРАХ */
+  color: #fff !important;
+
+  background: #000; /* фикс белых полос */
 }
 
 /* =========================
@@ -34,20 +28,18 @@ body {
 .bg {
   position: fixed;
   inset: 0;
-
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  z-index: -1;
+  overflow: hidden;
 
   background-image: url("/images/bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  transform: scale(1.1);
-  z-index: -1;
+  transform: scale(1.05);
 }
 
+/* затемнение */
 .bg::after {
   content: "";
   position: absolute;
@@ -55,8 +47,8 @@ body {
 
   background: radial-gradient(
     circle at center,
-    rgba(0,0,0,0.35),
-    rgba(0,0,0,0.80)
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.85)
   );
 }
 
@@ -68,18 +60,10 @@ header h1 {
   margin: 40px 0 10px;
   font-size: 3.5em;
   font-weight: 700;
+  letter-spacing: 2px;
   text-align: center;
 
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: fadeIn 1s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  color: #fff;
 }
 
 /* =========================
@@ -89,7 +73,6 @@ header h1 {
 .video-section {
   width: 100%;
   padding: 10px 0;
-
   opacity: 0;
   transform: translateY(60px);
   transition: 1s ease;
@@ -101,9 +84,10 @@ header h1 {
 }
 
 .video-section h2 {
-  text-align: center;
   font-size: 1.6em;
+  text-align: center;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 /* =========================
@@ -115,25 +99,25 @@ header h1 {
   justify-content: center;
   align-items: center;
   gap: 40px;
-
-  margin-top: 20px;
 }
 
 /* =========================
-   VIDEO ITEMS
+   VIDEO CARD
 ========================= */
 
 .video-item {
-  position: relative;
-  overflow: hidden;
+  width: 150px;
+  height: 250px;
 
   border-radius: 10px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 
-  background: rgba(255,255,255,0.05);
+  background: #111;
 }
 
-/* preview */
+/* превью */
 .video-item::before {
   content: "";
   position: absolute;
@@ -145,6 +129,7 @@ header h1 {
   transition: transform 0.35s ease;
 }
 
+/* hover */
 .video-item:hover::before {
   transform: scale(1.05);
 }
@@ -163,31 +148,19 @@ header h1 {
 
   opacity: 0;
   transition: 0.3s ease;
-
   filter: blur(25px);
-  z-index: 0;
 }
 
-.video-item.active::after {
+.video-item:hover::after {
   opacity: 1;
-}
-
-/* sizes */
-.vertical-carousel .video-item {
-  width: 150px;
-  height: 250px;
-}
-
-.horizontal-carousel .video-item,
-.edits-carousel .video-item {
-  width: 250px;
-  height: 150px;
 }
 
 /* active */
 .video-item.active {
-  transform: scale(1.1);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 10px 30px rgba(0,0,0,0.5),
+    0 0 40px rgba(255,255,255,0.4);
 }
 
 /* =========================
@@ -195,10 +168,8 @@ header h1 {
 ========================= */
 
 .carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
   margin-top: 20px;
+  text-align: center;
 }
 
 .carousel-controls button {
@@ -207,13 +178,8 @@ header h1 {
   border: none;
 
   padding: 8px 14px;
-  border-radius: 5px;
-
+  border-radius: 6px;
   cursor: pointer;
-}
-
-.carousel-controls button:hover {
-  background: #333;
 }
 
 /* =========================
@@ -233,7 +199,7 @@ footer a {
 }
 
 /* =========================
-   MOBILE FIX
+   RESPONSIVE
 ========================= */
 
 @media (max-width: 768px) {
@@ -246,15 +212,9 @@ footer a {
     gap: 15px;
   }
 
-  .vertical-carousel .video-item {
-    width: 110px;
-    height: 180px;
-  }
-
-  .horizontal-carousel .video-item,
-  .edits-carousel .video-item {
+  .video-item {
     width: 130px;
-    height: 85px;
+    height: 180px;
   }
 }
 
@@ -264,18 +224,8 @@ footer a {
     font-size: 2em;
   }
 
-  .vertical-carousel .video-item {
-    width: 95px;
+  .video-item {
+    width: 110px;
     height: 160px;
-  }
-
-  .horizontal-carousel .video-item,
-  .edits-carousel .video-item {
-    width: 115px;
-    height: 70px;
-  }
-
-  .carousel {
-    gap: 12px;
   }
 }
