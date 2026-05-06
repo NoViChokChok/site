@@ -1,53 +1,43 @@
+
 /* =========================
-   RESET / BASE FIX
+   ROOT FIX (ВАЖНО)
 ========================= */
 
-* {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
 
-html, body {
-  width: 100%;
-  height: 100%;
-  background: #000;
-  overflow-x: hidden;
-  font-family: 'Poppins', sans-serif;
+  background: #000 !important;
   color: #fff;
 
-  /* FIX iOS / Safari bounce white gaps */
+  overflow-x: hidden;
   overscroll-behavior: none;
+
+  font-family: 'Poppins', sans-serif;
 }
 
 /* =========================
-   BACKGROUND (SAFARI SAFE)
+   BACKGROUND
 ========================= */
 
 .bg {
   position: fixed;
   inset: 0;
-  z-index: -1;
-  overflow: hidden;
-}
-
-/* картинка фона */
-.bg img {
-  position: absolute;
-  inset: 0;
 
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
 
-  object-fit: cover;
+  background-image: url("/images/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   transform: scale(1.1);
-
-  /* важно: blur только тут, НЕ на div */
-  filter: blur(0px);
+  z-index: -1;
 }
 
-/* затемнение поверх */
 .bg::after {
   content: "";
   position: absolute;
@@ -55,7 +45,7 @@ html, body {
 
   background: radial-gradient(
     circle at center,
-    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.35),
     rgba(0,0,0,0.85)
   );
 }
@@ -64,14 +54,22 @@ html, body {
    HEADER
 ========================= */
 
-header {
+header h1 {
+  margin: 40px 0 10px;
+  font-size: 3.5em;
+  font-weight: 700;
   text-align: center;
-  padding: 40px 0;
+
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeIn 1s forwards;
 }
 
-header h1 {
-  font-size: 3em;
-  font-weight: 700;
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================
@@ -80,13 +78,22 @@ header h1 {
 
 .video-section {
   width: 100%;
-  text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
+
+  opacity: 0;
+  transform: translateY(60px);
+  transition: 1s ease;
+}
+
+.video-section.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .video-section h2 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.6em;
+  margin-bottom: 10px;
 }
 
 /* =========================
@@ -96,43 +103,47 @@ header h1 {
 .carousel {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  flex-wrap: nowrap;
+  align-items: center;
+  gap: 40px;
+
+  margin-top: 20px;
 }
 
 /* =========================
-   VIDEO ITEM
+   VIDEO ITEMS
 ========================= */
 
 .video-item {
-  width: 220px;
-  height: 140px;
-
-  border-radius: 12px;
-  cursor: pointer;
-
   position: relative;
   overflow: hidden;
+
+  border-radius: 10px;
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.05);
+}
+
+/* preview */
+.video-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
 
   background-size: cover;
   background-position: center;
 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.35s ease;
 }
 
-/* hover zoom */
-.video-item:hover {
+.video-item:hover::before {
   transform: scale(1.05);
 }
 
-/* =========================
-   GLOW EFFECT (FIXED)
-========================= */
-
+/* glow */
 .video-item::after {
   content: "";
   position: absolute;
-  inset: -30px;
+  inset: -20px;
 
   background: radial-gradient(
     circle,
@@ -141,15 +152,32 @@ header h1 {
   );
 
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: 0.3s ease;
 
   filter: blur(25px);
   z-index: 0;
-  pointer-events: none;
 }
 
-.video-item:hover::after {
+.video-item.active::after {
   opacity: 1;
+}
+
+/* sizes */
+.vertical-carousel .video-item {
+  width: 150px;
+  height: 250px;
+}
+
+.horizontal-carousel .video-item,
+.edits-carousel .video-item {
+  width: 250px;
+  height: 150px;
+}
+
+/* active */
+.video-item.active {
+  transform: scale(1.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* =========================
@@ -157,17 +185,20 @@ header h1 {
 ========================= */
 
 .carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   margin-top: 20px;
 }
 
 .carousel-controls button {
   background: #111;
   color: #fff;
-
   border: none;
-  padding: 8px 14px;
 
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 5px;
+
   cursor: pointer;
 }
 
@@ -177,7 +208,8 @@ header h1 {
 
 footer {
   text-align: center;
-  padding: 50px 0;
+  margin: 50px 0;
+  color: #fff;
 }
 
 footer a {
@@ -187,41 +219,49 @@ footer a {
 }
 
 /* =========================
-   FIX IOS / MOBILE WHITE BORDERS
-========================= */
-
-body {
-  min-height: 100vh;
-}
-
-/* =========================
-   RESPONSIVE
+   MOBILE FIX
 ========================= */
 
 @media (max-width: 768px) {
 
   header h1 {
-    font-size: 2.2em;
+    font-size: 2.5em;
   }
 
   .carousel {
     gap: 15px;
   }
 
-  .video-item {
-    width: 140px;
-    height: 90px;
+  .vertical-carousel .video-item {
+    width: 110px;
+    height: 180px;
+  }
+
+  .horizontal-carousel .video-item,
+  .edits-carousel .video-item {
+    width: 130px;
+    height: 85px;
   }
 }
 
 @media (max-width: 480px) {
 
   header h1 {
-    font-size: 1.8em;
+    font-size: 2em;
   }
 
-  .video-item {
-    width: 120px;
-    height: 80px;
+  .vertical-carousel .video-item {
+    width: 95px;
+    height: 160px;
+  }
+
+  .horizontal-carousel .video-item,
+  .edits-carousel .video-item {
+    width: 115px;
+    height: 70px;
+  }
+
+  .carousel {
+    gap: 12px;
   }
 }
