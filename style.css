@@ -3,22 +3,29 @@
    ROOT FIX (ВАЖНО)
 ========================= */
 
-html, body {
+html {
   height: 100%;
+  background: #000;
+}
+
+body {
   margin: 0;
   padding: 0;
 
-  background: #000 !important;
+  font-family: 'Poppins', sans-serif;
   color: #fff;
 
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  background: #000;
 
-  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  overscroll-behavior: none;
 }
 
 /* =========================
-   BACKGROUND
+   BACKGROUND LAYER
 ========================= */
 
 .bg {
@@ -35,9 +42,22 @@ html, body {
   background-repeat: no-repeat;
 
   transform: scale(1.1);
-  z-index: -1;
+  z-index: -2;
 }
 
+/* ЧЁРНАЯ ПОДЛОЖКА (ФИКС ВСЕХ БЕЛЫХ КРАЁВ) */
+.bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: #000;
+  opacity: 0.65;
+
+  z-index: 0;
+}
+
+/* ТЁМНЫЙ ГРАДИЕНТ ДЛЯ КРАСОТЫ */
 .bg::after {
   content: "";
   position: absolute;
@@ -45,7 +65,7 @@ html, body {
 
   background: radial-gradient(
     circle at center,
-    rgba(0,0,0,0.35),
+    rgba(0,0,0,0.2),
     rgba(0,0,0,0.85)
   );
 }
@@ -93,7 +113,6 @@ header h1 {
 .video-section h2 {
   text-align: center;
   font-size: 1.6em;
-  margin-bottom: 10px;
 }
 
 /* =========================
@@ -123,7 +142,7 @@ header h1 {
   background: rgba(255,255,255,0.05);
 }
 
-/* preview */
+/* превью */
 .video-item::before {
   content: "";
   position: absolute;
@@ -209,7 +228,6 @@ header h1 {
 footer {
   text-align: center;
   margin: 50px 0;
-  color: #fff;
 }
 
 footer a {
@@ -259,9 +277,5 @@ footer a {
   .edits-carousel .video-item {
     width: 115px;
     height: 70px;
-  }
-
-  .carousel {
-    gap: 12px;
   }
 }
