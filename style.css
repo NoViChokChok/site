@@ -1,49 +1,53 @@
-
 /* =========================
-   GLOBAL FIX (Safari / Mobile)
+   RESET / BASE FIX
 ========================= */
 
-html, body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
   width: 100%;
-  min-height: 100%;
-
+  height: 100%;
   background: #000;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
   color: #fff;
 
-  font-family: 'Poppins', sans-serif;
-
-  overflow-x: hidden;
-
+  /* FIX iOS / Safari bounce white gaps */
   overscroll-behavior: none;
 }
 
 /* =========================
-   BACKGROUND FIX (ВАЖНО)
+   BACKGROUND (SAFARI SAFE)
 ========================= */
 
 .bg {
   position: fixed;
   inset: 0;
-  z-index: -2;
-
-  background: #000;
+  z-index: -1;
   overflow: hidden;
 }
 
 /* картинка фона */
-.bg {
-  background-image: url("/images/bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.bg img {
+  position: absolute;
+  inset: 0;
 
-  transform: scale(1.08);
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transform: scale(1.1);
+
+  /* важно: blur только тут, НЕ на div */
+  filter: blur(0px);
 }
 
-/* затемнение (фикс читаемости текста) */
+/* затемнение поверх */
 .bg::after {
   content: "";
   position: absolute;
@@ -62,24 +66,12 @@ html, body {
 
 header {
   text-align: center;
-  padding: 40px 0 10px;
+  padding: 40px 0;
 }
 
 header h1 {
   font-size: 3em;
-  margin: 0;
-
-  opacity: 0;
-  transform: translateY(-20px);
-
-  animation: fadeIn 1s ease forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  font-weight: 700;
 }
 
 /* =========================
@@ -87,19 +79,9 @@ header h1 {
 ========================= */
 
 .video-section {
-  padding: 20px 0;
+  width: 100%;
   text-align: center;
-
-  opacity: 0;
-  transform: translateY(50px);
-
-  transition: 1s ease;
-}
-
-/* если позже добавишь JS reveal */
-.video-section.show {
-  opacity: 1;
-  transform: translateY(0);
+  padding: 20px 0;
 }
 
 .video-section h2 {
@@ -115,50 +97,54 @@ header h1 {
   display: flex;
   justify-content: center;
   gap: 30px;
+  flex-wrap: nowrap;
 }
 
 /* =========================
-   VIDEO ITEMS (ВАШИ ПРЯМОУГОЛЬНИКИ)
+   VIDEO ITEM
 ========================= */
 
 .video-item {
-  position: relative;
-  overflow: hidden;
+  width: 220px;
+  height: 140px;
 
   border-radius: 12px;
   cursor: pointer;
 
-  background: rgba(255,255,255,0.04);
+  position: relative;
+  overflow: hidden;
 
-  transition: transform 0.3s ease;
+  background-size: cover;
+  background-position: center;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* HOVER */
+/* hover zoom */
 .video-item:hover {
   transform: scale(1.05);
 }
 
 /* =========================
-   GLOW EFFECT (ИСПРАВЛЕННЫЙ)
+   GLOW EFFECT (FIXED)
 ========================= */
 
 .video-item::after {
   content: "";
   position: absolute;
-  inset: -20px;
+  inset: -30px;
 
   background: radial-gradient(
     circle,
-    rgba(255,255,255,0.35),
+    rgba(255,255,255,0.25),
     transparent 60%
   );
 
   opacity: 0;
-  transition: 0.3s ease;
+  transition: opacity 0.3s ease;
 
   filter: blur(25px);
   z-index: 0;
-
   pointer-events: none;
 }
 
@@ -167,42 +153,10 @@ header h1 {
 }
 
 /* =========================
-   ACTIVE STATE
-========================= */
-
-.video-item.active {
-  transform: scale(1.08);
-
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.4),
-    0 10px 30px rgba(0,0,0,0.6),
-    0 0 40px rgba(255,255,255,0.2);
-}
-
-/* =========================
-   SIZES
-========================= */
-
-.vertical-carousel .video-item {
-  width: 150px;
-  height: 250px;
-}
-
-.horizontal-carousel .video-item,
-.edits-carousel .video-item {
-  width: 250px;
-  height: 150px;
-}
-
-/* =========================
    CONTROLS
 ========================= */
 
 .carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-
   margin-top: 20px;
 }
 
@@ -223,18 +177,25 @@ header h1 {
 
 footer {
   text-align: center;
-  margin: 50px 0;
+  padding: 50px 0;
 }
 
 footer a {
   color: #fff;
   text-decoration: none;
-
   margin: 0 10px;
 }
 
 /* =========================
-   MOBILE FIX (Safari safe)
+   FIX IOS / MOBILE WHITE BORDERS
+========================= */
+
+body {
+  min-height: 100vh;
+}
+
+/* =========================
+   RESPONSIVE
 ========================= */
 
 @media (max-width: 768px) {
@@ -247,15 +208,9 @@ footer a {
     gap: 15px;
   }
 
-  .vertical-carousel .video-item {
-    width: 110px;
-    height: 180px;
-  }
-
-  .horizontal-carousel .video-item,
-  .edits-carousel .video-item {
-    width: 130px;
-    height: 85px;
+  .video-item {
+    width: 140px;
+    height: 90px;
   }
 }
 
@@ -265,14 +220,8 @@ footer a {
     font-size: 1.8em;
   }
 
-  .vertical-carousel .video-item {
-    width: 95px;
-    height: 160px;
-  }
-
-  .horizontal-carousel .video-item,
-  .edits-carousel .video-item {
-    width: 115px;
-    height: 70px;
+  .video-item {
+    width: 120px;
+    height: 80px;
   }
 }
