@@ -1,74 +1,98 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Opia - Portfolio</title>
+document.querySelectorAll('.carousel').forEach((carousel) => {
+  const items = carousel.querySelectorAll('.video-item');
+  let activeIndex = 0;
 
-  <!-- Шрифт Poppins Bold -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  const setActive = (index) => {
+    items.forEach((item) => item.classList.remove('active'));
+    items[index].classList.add('active');
+    activeIndex = index;
+  };
 
-  <!-- Стили -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="bg"></div>
-  <!-- Header с анимацией -->
-  <header>
-    <h1 class="fade-in">Opia Portfolio</h1>
-  </header>
+  // Клик по видео
+  items.forEach((item, index) => {
+    item.addEventListener('click', () => setActive(index));
+    item.setAttribute('tabindex', '0'); // доступно с клавиатуры
+  });
 
-  <!-- Вертикальные видео -->
-  <section class="video-section vertical" aria-label="Vertical videos">
-    <h2>Vertical videos</h2>
-    <div class="carousel vertical-carousel" id="verticalCarousel">
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-    </div>
-    <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
-    </div>
-  </section>
+  // Навигация клавишами ← → при фокусе на карусели
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') setActive((activeIndex - 1 + items.length) % items.length);
+    if (e.key === 'ArrowRight') setActive((activeIndex + 1) % items.length);
+  });
 
-  <!-- Горизонтальные видео -->
-  <section class="video-section horizontal" aria-label="Horizontal videos">
-    <h2>Horizontal videos</h2>
-    <div class="carousel horizontal-carousel" id="horizontalCarousel">
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-    </div>
-    <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
-    </div>
-  </section>
+  // Кнопки управления
+  const prevBtn = carousel.parentElement.querySelector('.prev');
+  const nextBtn = carousel.parentElement.querySelector('.next');
 
-  <!-- Эдиты -->
-  <section class="video-section edits" aria-label="Edits">
-    <h2>Edits</h2>
-    <div class="carousel edits-carousel" id="editsCarousel">
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-      <div class="video-item" data-video="mxziVfJP1Q8"></div>
-    </div>
-    <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
-    </div>
-  </section>
+  prevBtn.addEventListener('click', () => setActive((activeIndex - 1 + items.length) % items.length));
+  nextBtn.addEventListener('click', () => setActive((activeIndex + 1) % items.length));
 
-  <!-- Контакты -->
-  <footer>
-    <p>Контакты: 
-      <a href="https://t.me/opiathecreator" target="_blank" rel="noopener noreferrer">Telegram</a> / 
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=opiathecreator@gmail.com" target="_blank" rel="noopener noreferrer">Gmail</a>
-    </p>
-  </footer>
+  setActive(activeIndex); // инициализация
+});
 
-  <!-- Скрипт -->
-  <script src="script.js"></script>
-</body>
-</html>
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".video-section");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+
+        // задержка в зависимости от порядка секции
+        const delay = Array.from(sections).indexOf(entry.target) * 150;
+
+        setTimeout(() => {
+          entry.target.classList.add("show");
+        }, delay);
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+});
+document.querySelectorAll('.video-item').forEach(item => {
+  const id = item.dataset.video;
+
+  // ставим превью YouTube
+  item.style.setProperty(
+  "--thumb",
+  `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`
+);
+
+  // клик → открыть видео
+  item.addEventListener('click', () => {
+    openVideo(id);
+  });
+});
+
+function openVideo(id) {
+  const overlay = document.createElement('div');
+
+  overlay.style = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  `;
+
+  overlay.innerHTML = `
+    <iframe 
+      width="85%" 
+      height="85%" 
+      src="https://www.youtube.com/embed/${id}?autoplay=1"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  `;
+
+  overlay.addEventListener('click', () => overlay.remove());
+
+  document.body.appendChild(overlay);
+}
