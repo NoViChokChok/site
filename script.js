@@ -57,10 +57,7 @@ document.querySelectorAll('.video-item').forEach(item => {
   const id = item.dataset.video;
 
   // ставим превью YouTube
-  item.style.setProperty(
-  "--thumb",
-  `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`
-);
+  item.style.backgroundImage = `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`;
 
   // клик → открыть видео
   item.addEventListener('click', () => {
