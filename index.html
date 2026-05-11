@@ -2,18 +2,28 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- Цвет панелей Safari / мобильных браузеров -->
+  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <title>Opia - Portfolio</title>
 
-  <!-- Шрифт Poppins Bold -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Шрифт Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Стили -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="bg"></div>
-  <!-- Header с анимацией -->
+
+  <!-- Header -->
   <header>
     <h1 class="fade-in">Opia Portfolio</h1>
   </header>
@@ -21,49 +31,57 @@
   <!-- Вертикальные видео -->
   <section class="video-section vertical" aria-label="Vertical videos">
     <h2>Vertical videos</h2>
+
     <div class="carousel vertical-carousel" id="verticalCarousel">
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
     </div>
+
     <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
+      <button class="prev" type="button">←</button>
+      <button class="next" type="button">→</button>
     </div>
   </section>
 
   <!-- Горизонтальные видео -->
   <section class="video-section horizontal" aria-label="Horizontal videos">
     <h2>Horizontal videos</h2>
+
     <div class="carousel horizontal-carousel" id="horizontalCarousel">
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
       <div class="video-item" data-video="mxziVfJP1Q8"></div>
     </div>
+
     <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
+      <button class="prev" type="button">←</button>
+      <button class="next" type="button">→</button>
     </div>
   </section>
 
   <!-- Эдиты -->
   <section class="video-section edits" aria-label="Edits">
     <h2>Edits</h2>
+
     <div class="carousel edits-carousel" id="editsCarousel">
       <div class="video-item" data-video="jIGcKZJPvZs"></div>
       <div class="video-item" data-video="jfAfZYvcx20"></div>
       <div class="video-item" data-video="XE2baYhPSf8"></div>
     </div>
+
     <div class="carousel-controls">
-      <button class="prev">←</button>
-      <button class="next">→</button>
+      <button class="prev" type="button">←</button>
+      <button class="next" type="button">→</button>
     </div>
   </section>
 
   <!-- Контакты -->
   <footer>
-    <p>Контакты: 
-      <a href="https://t.me/opiathecreator" target="_blank" rel="noopener noreferrer">Telegram</a> / 
+    <p>
+      Контакты:
+      <a href="https://t.me/opiathecreator" target="_blank" rel="noopener noreferrer">Telegram</a>
+      /
       <a href="https://mail.google.com/mail/?view=cm&fs=1&to=opiathecreator@gmail.com" target="_blank" rel="noopener noreferrer">Gmail</a>
     </p>
   </footer>
