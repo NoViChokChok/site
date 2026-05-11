@@ -53,16 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(section);
   });
 });
-document.querySelectorAll('.video-item').forEach(item => {
+ddocument.querySelectorAll('.video-item').forEach(item => {
   const id = item.dataset.video;
 
-  // ставим превью YouTube
   item.style.setProperty(
-  "--thumb",
-  `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`
-);
+    "--thumb",
+    `url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg)`
+  );
 
-  // клик → открыть видео
   item.addEventListener('click', () => {
     openVideo(id);
   });
