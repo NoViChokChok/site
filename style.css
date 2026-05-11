@@ -6,7 +6,7 @@
   width: 100%;
   height: 100%;
 
-  background-image: url("/images/bg.jpg"); /* 👈 сюда твой фон */
+  background-image: url("images/bg.jpg"); /* 👈 сюда твой фон */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -182,24 +182,19 @@ footer a:hover {
 
   background: rgb(255, 255, 255);
 }
+
 /* превью-фон */
 .video-item::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: var(--thumb);
+  inset: 0;
+
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-repeat: no-repeat;
 
   transition: transform 0.35s ease;
-
   transform: scale(1);
-
-  z-index: 0;
 }
 
 /* hover эффект */
