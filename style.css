@@ -6,20 +6,19 @@
   width: 100%;
   height: 100%;
 
-  background-image: url("images/bg.jpg"); /* 👈 сюда твой фон */
+  background-image: url("images/bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   filter: blur(0px);
-  transform: scale(1.1); /* чтобы не было краёв */
-  
+  transform: scale(1.1);
+
   z-index: -1;
   overflow: hidden;
-  
 }
 
-/* затемнение (чтобы текст читался) */
+/* затемнение, чтобы текст читался */
 .bg::after {
   content: "";
   position: absolute;
@@ -27,12 +26,13 @@
 
   background: radial-gradient(
     circle at center,
-    rgba(0,0,0,0.35),
-    rgba(0,0,0,0.75)
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.75)
   );
 }
+
 body {
- font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
 
@@ -41,19 +41,19 @@ body {
   overflow-x: hidden;
   box-sizing: border-box;
 
-  background: transparent; /* 👈 ВАЖНО */
+  background: transparent;
   position: relative;
   z-index: 1;
-  overflow-x: hidden;
 }
 
-/* Header с анимацией */
+/* --- Header с анимацией --- */
 header h1 {
   margin: 40px 0 10px;
   font-size: 3.5em;
   font-weight: 700;
   letter-spacing: 2px;
   text-align: center;
+
   opacity: 0;
   transform: translateY(-20px);
   animation: fadeIn 1s forwards;
@@ -72,6 +72,16 @@ header h1 {
   width: 100vw;
   padding: 10px 0;
   box-sizing: border-box;
+
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  will-change: opacity, transform;
+}
+
+.video-section.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .video-section h2 {
@@ -86,37 +96,12 @@ header h1 {
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin-top: 30px; /* было 40px, уменьшаем расстояние от заголовка секции */
-  position: relative; /* для абсолютного позиционирования кнопок, если нужно */
-}
 
-/* --- Кнопки управления --- */
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 30px; /* немного под каруселью */
-  pointer-events: auto; /* чтобы кнопки были кликабельны поверх других элементов */
-  z-index: 2; /* выше, чем видео, но не мешает полноэкранному режиму */
+  margin-top: 30px;
   position: relative;
 }
 
-.carousel-controls button {
-  background: #111;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background 0.3s;
-}
-
-.carousel-controls button:hover {
-  background: #555;
-}
-
-/* --- Размеры и оформление видео --- */
+/* --- Размеры видео --- */
 .carousel.vertical-carousel .video-item {
   width: 150px;
   height: 250px;
@@ -128,84 +113,57 @@ header h1 {
   height: 150px;
 }
 
-.carousel .video-item {
-  background: #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
-  border-radius: 10px;
-}
-
-.video-item.active {
-  transform: scale(1.15);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  background: #aaa;
-  z-index: 1;
-}
-
-/* --- Footer --- */
-footer {
-  margin: 50px 0;
-  font-size: 1.2em;
-  text-align: center;
-}
-
-footer a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  margin: 0 10px;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-.video-section {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 1.2s ease, transform 1.2s ease;
-  will-change: opacity, transform;
-}
-
-/* когда секция видима */
-.video-section.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* --- Карточка видео --- */
 .video-item {
   position: relative;
   overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #000;
   border-radius: 10px;
   cursor: pointer;
 
-  background: rgb(255, 255, 255);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* превью-фон */
-.video-item::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+/* --- Картинка превью --- */
+.video-item img {
+  width: 100%;
+  height: 100%;
 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
 
   transition: transform 0.35s ease;
-  transform: scale(1);
+  pointer-events: none;
 }
 
 /* hover эффект */
-.video-item:hover::before {
+.video-item:hover img {
   transform: scale(1.05);
 }
 
-/* активное видео (если у тебя есть .active) */
-.video-item.active::before {
+/* активное видео */
+.video-item.active {
+  transform: scale(1.15);
+  z-index: 1;
+
+  box-shadow:
+    0 0 0 1px rgb(255, 255, 255),
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 0 40px rgb(255, 255, 255);
+}
+
+.video-item.active img {
   transform: scale(1.08);
 }
+
+/* --- Свечение активной карточки --- */
 .video-item::after {
   content: "";
   position: absolute;
@@ -225,19 +183,67 @@ footer a:hover {
   z-index: 0;
   pointer-events: none;
 }
-.video-item.active {
-  box-shadow:
-    0 0 0 1px rgb(255, 255, 255),
-    0 10px 30px rgba(0, 0, 0, 0.4),
-    0 0 40px rgb(255, 255, 255);
+
+.video-item.active::after {
+  opacity: 1;
 }
+
+/* --- Кнопки управления --- */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  margin-top: 30px;
+  pointer-events: auto;
+  z-index: 2;
+  position: relative;
+}
+
+.carousel-controls button {
+  background: #111;
+  color: #fff;
+
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+
+  cursor: pointer;
+  font-size: 1em;
+
+  transition: background 0.3s;
+}
+
+.carousel-controls button:hover {
+  background: #555;
+}
+
+/* --- Footer --- */
+footer {
+  margin: 50px 0;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+footer a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 /* --- Адаптивность --- */
 @media (max-width: 768px) {
   header h1 {
     font-size: 2.5em;
   }
+
   .video-section {
-    margin-bottom: 0px; /* было больше → уменьшаем */
+    margin-bottom: 0;
   }
 
   .video-section h2 {
@@ -245,7 +251,6 @@ footer a:hover {
     margin-bottom: 10px;
   }
 
-  /* --- Карусель --- */
   .carousel {
     gap: 15px;
     margin-top: 10px;
@@ -262,7 +267,6 @@ footer a:hover {
     height: 85px;
   }
 
-  /* --- Кнопки --- */
   .carousel-controls {
     margin-top: 12px;
   }
@@ -272,7 +276,6 @@ footer a:hover {
     font-size: 0.85em;
   }
 
-  /* --- Активное видео --- */
   .video-item.active {
     transform: scale(1.08);
   }
@@ -282,6 +285,7 @@ footer a:hover {
   header h1 {
     font-size: 2em;
   }
+
   .video-section {
     margin-bottom: -10px;
   }
@@ -291,7 +295,6 @@ footer a:hover {
     margin-bottom: 8px;
   }
 
-  /* --- Карусель --- */
   .carousel {
     gap: 12px;
     margin-top: 8px;
@@ -308,7 +311,6 @@ footer a:hover {
     height: 70px;
   }
 
-  /* --- Кнопки --- */
   .carousel-controls {
     margin-top: 10px;
   }
@@ -318,7 +320,6 @@ footer a:hover {
     font-size: 0.8em;
   }
 
-  /* --- Активное видео --- */
   .video-item.active {
     transform: scale(1.03);
   }
