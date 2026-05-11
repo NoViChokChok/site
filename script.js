@@ -56,15 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelectorAll('.video-item').forEach(item => {
   const id = item.dataset.video;
 
-  // ставим превью YouTube
-  item.style.backgroundImage = `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`;
+  const img = document.createElement('img');
+  img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  img.alt = 'Video preview';
+  img.loading = 'lazy';
 
-  // клик → открыть видео
+  item.appendChild(img);
+
   item.addEventListener('click', () => {
     openVideo(id);
   });
 });
-
 function openVideo(id) {
   const overlay = document.createElement('div');
 
