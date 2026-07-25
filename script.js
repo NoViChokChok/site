@@ -11,33 +11,40 @@ document.querySelectorAll('.carousel').forEach((carousel) => {
   // Клик по видео
   items.forEach((item, index) => {
     item.addEventListener('click', () => setActive(index));
-    item.setAttribute('tabindex', '0'); // доступно с клавиатуры
+    item.setAttribute('tabindex', '0');
   });
 
-  // Навигация клавишами ← → при фокусе на карусели
+  // Навигация клавишами ← →
   carousel.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') setActive((activeIndex - 1 + items.length) % items.length);
-    if (e.key === 'ArrowRight') setActive((activeIndex + 1) % items.length);
+    if (e.key === 'ArrowLeft') {
+      setActive((activeIndex - 1 + items.length) % items.length);
+    }
+    if (e.key === 'ArrowRight') {
+      setActive((activeIndex + 1) % items.length);
+    }
   });
 
   // Кнопки управления
   const prevBtn = carousel.parentElement.querySelector('.prev');
   const nextBtn = carousel.parentElement.querySelector('.next');
 
-  prevBtn.addEventListener('click', () => setActive((activeIndex - 1 + items.length) % items.length));
-  nextBtn.addEventListener('click', () => setActive((activeIndex + 1) % items.length));
+  prevBtn.addEventListener('click', () => {
+    setActive((activeIndex - 1 + items.length) % items.length);
+  });
 
-  setActive(activeIndex); // инициализация
+  nextBtn.addEventListener('click', () => {
+    setActive((activeIndex + 1) % items.length);
+  });
+
+  setActive(activeIndex);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(".video-section");
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-
-        // задержка в зависимости от порядка секции
         const delay = Array.from(sections).indexOf(entry.target) * 150;
 
         setTimeout(() => {
@@ -49,15 +56,24 @@ document.addEventListener("DOMContentLoaded", () => {
     threshold: 0.2
   });
 
-  sections.forEach(section => {
-    observer.observe(section);
-  });
+  sections.forEach(section => observer.observe(section));
 });
+
+// Создание превью YouTube
 document.querySelectorAll('.video-item').forEach(item => {
   const id = item.dataset.video;
 
   const img = document.createElement('img');
-  img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+  // Сначала пробуем максимальное качество
+  img.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+
+  // Если его нет — автоматически используем hqdefault
+  img.onerror = () => {
+    img.onerror = null;
+    img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  };
+
   img.alt = 'Video preview';
   img.loading = 'lazy';
 
@@ -67,6 +83,7 @@ document.querySelectorAll('.video-item').forEach(item => {
     openVideo(id);
   });
 });
+
 function openVideo(id) {
   const overlay = document.createElement('div');
 
@@ -81,9 +98,9 @@ function openVideo(id) {
   `;
 
   overlay.innerHTML = `
-    <iframe 
-      width="85%" 
-      height="85%" 
+    <iframe
+      width="85%"
+      height="85%"
       src="https://www.youtube.com/embed/${id}?autoplay=1"
       frameborder="0"
       allow="autoplay; encrypted-media"
